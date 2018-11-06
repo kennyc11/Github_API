@@ -36,3 +36,16 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 #The above code was sourced from Michael Galarnyk's blog post
 #https://towardsdatascience.com/accessing-data-from-github-api-using-r-3633fb62cb08
 
+
+
+#Interrogating my own github "kennyc11"
+myGit  <- fromJSON("https://api.github.com/users/kennyc11")
+myGit$following #returns the number of people that I am following
+myGit$followers #returns the number of people who are following me
+myGit$login #returns my login username
+myGit$public_repos #returns the number of public repositories I have
+
+
+
+
+
