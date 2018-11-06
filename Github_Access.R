@@ -45,6 +45,40 @@ myGit$followers #returns the number of people who are following me
 myGit$login #returns my login username
 myGit$public_repos #returns the number of public repositories I have
 
+#An interrogation of my repositories in github
+myRepos <- fromJSON("https://api.github.com/users/kennyc11/repos")
+myRepos$language #returns the languages I have used in my repositories
+length(myRepos$language) #returns the count of languages used in my repositories
+
+#Returns list of people as a matrix of who I am following on github
+myUsers <- fromJSON("https://api.github.com/users/kennyc11/following")
+myUsers$login #returns the username logins of my followers on github
+mikeBostock <- myUsers[1,] #gets the first entry in the row from my followers usernames 
+mikeBostock$login #returns the login username of Mike Bostock
+
+mikeBostock$organizations_url #gets the url for mike Bostocks organisations in github
+mikeBostock$repos_url
+
+mBostockRepos <- fromJSON("https://api.github.com/users/mbostock/repos") 
+mBostockRepos$name #returns the name of Mike Bostocks repostiroies names
+mBostockRepos$private #returns if Mike Bostocks repos are private or not
+mBostockRepos$language #returns the lanaguages of Mike Bostocks repositories
+
+#Interrogating Mike Bostocks organisations 
+mBostockOrgs <- fromJSON("https://api.github.com/users/mbostock/orgs") 
+mBostockOrgs$login #returns a list of Mike Bostocks companies
+mBostockOrgs$members_url
+mBostockOrgs$repos_url
+
+#Interrogation of members of Mike Bostock Organisation d3
+mBostockOrgsd3 <- fromJSON("https://api.github.com/orgs/d3/members")
+mBostockOrgsd3$login #returns the username of d3 members
+
+#Interrogation of d3 repos
+d3Repos <- fromJSON("https://api.github.com/orgs/d3/repos")
+d3Repos$name #returns the name of d3's repositories
+d3Repos$
+
 
 
 
