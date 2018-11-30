@@ -143,11 +143,16 @@ VisualGraph1 = plot_ly(data = allusers.DF, x = ~Repositories, y = ~Followers,
 VisualGraph1
 
 #Upload the graph to my plotly account kennyc11, the link for this graph is https://plot.ly/~kennyc11/8/#/
-api_create(plot1, filename = "Followers vs. Repositories")
+api_create(VisualGraph1, filename = "Followers vs. Repositories")
+
+#Plot 2: Scatter plot of 
+VisualGraph2 = plot_ly(data = allusers.DF, x = ~Following, y = ~Followers, text = ~paste("Following: ", Following, 
+                                         "<br>Followers: ", Followers, "<br>Date Created:", DateCreated), color = ~DateCreated)
 
 
 
-
+VisualGraph2
+api_create(VisualGraph2, filename = "Following vs. Followers")
 
 
 
