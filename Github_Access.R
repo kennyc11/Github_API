@@ -1,8 +1,8 @@
-#install.packages("jsonlite")
+install.packages("jsonlite")
 library(jsonlite)
-#install.packages("httpuv")
+install.packages("httpuv")
 library(httpuv)
-#install.packages("httr")
+install.packages("httr")
 library(httr)
 
 # Can be github, linkedin etc depending on application
@@ -15,11 +15,11 @@ myapp <- oauth_app(appname = "Interrogate_API",
 
 # Get OAuth credentials
 github_token <- oauth2.0_token(oauth_endpoints("github"), myapp) #run this line and connect them!!! 
-1
+
 
 # Use API
-getToken <- config(token = github_token)
-#req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
+gtoken <- config(token = github_token)
+req <- GET("https://api.github.com/users/jtleek/repos", gtoken)
 
 # Take action on http error
 stop_for_status(req)
@@ -95,24 +95,5 @@ mBostockOrgsd3$login #returns the username of d3 members
 d3Repos <- fromJSON("https://api.github.com/orgs/d3/repos")
 d3Repos$name #returns the name of d3's repositories
 
-#Interrogating the Github API and returning relevant information as data frames
-
-myDataJSon = toJSON(myGit, pretty = TRUE)
-myDataJSon
-
-
-
-#Step two, visulisation interrogation of API
-
-
-#Installing plotly for better visualisation of graphs
-install.packages("plotly")
-require(devtools)
-library(plotly)
-
-#Linking R to plotly. This allows me to create online interactive graphs through interrogation github API
-#building visulation of the data available and uploading to plotly using graphs based on d3s library.
-Sys.setenv("plotly_username"="kennyc11")
-Sys.setenv("plotly_api_key"="zFLJG9Kb2on2xdumwWg1")
 
 
