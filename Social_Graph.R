@@ -145,7 +145,7 @@ VisualGraph1
 #Upload the graph to my plotly account kennyc11, the link for this graph is https://plot.ly/~kennyc11/8/#/
 api_create(VisualGraph1, filename = "Followers vs. Repositories")
 
-#Plot 2: Scatter plot of 
+#Plot 2: Scatter plot of Mike Bostocks following vs his followers 
 VisualGraph2 = plot_ly(data = allusers.DF, x = ~Following, y = ~Followers, text = ~paste("Following: ", Following, 
                                          "<br>Followers: ", Followers, "<br>Date Created:", DateCreated), color = ~DateCreated)
 
@@ -199,11 +199,6 @@ LanguageTableTop20 = LanguageTable[(length(LanguageTable)-19):length(LanguageTab
 #Save this table as a data frame
 LanguageDF = as.data.frame(LanguageTableTop20)
 
-#Plot the data frame of languages
-VisualGraph_3= plot_ly(data = LanguageDF, x = LanguageDF$Languages, y = LanguageDF$Freq, type = "bar")
-VisualGraph_3
-
-
 #Bubble chart to count the most popular use of languages amongst users in github
 BubbleChart <- plot_ly(data = LanguageDF, x = ~ LanguageDF$Languages, y = ~LanguageDF$Freq, text = ~paste("Language: ", LanguageDF$Languages, "<br>Frequency: ", 
                                                                                                            LanguageDF$Freq), type = 'scatter', mode = 'markers',
@@ -212,73 +207,20 @@ BubbleChart <- plot_ly(data = LanguageDF, x = ~ LanguageDF$Languages, y = ~Langu
          xaxis = list(showgrid = FALSE),
          yaxis = list(showgrid = FALSE))
 BubbleChart
-api_create(BubbleChart, filename = "Following vs. Repositories")
+
+#upload to plotly
+api_create(BubbleChart, filename = "Most used Languages")
 
 
-api_create(VisualGraph_3, "Top 20 Languages")
 
 #Put top languages into a bar chart
+#Plot the data frame of languages, showing most used 
+#languages
 Graph4 = plot_ly(data = LanguageDF, x = LanguageDF$Languages, y = LanguageDF$Freq, type = "bar")
 Graph4
 
-
+#Upload to plotly
 api_create(graph4, "Top 20 Languages Used on Github")
-
-#Step 1: Processing the data from Github
-mBostockFollowing <- fromJSON("https://api.github.com/users/mbostock/following")
-mBostockFollowing$login #gets the user names of Mike Bostock's followers
-
-a <- "https://api.github.com/users/"
-b <- mBostockFollowing1$login[5]
-b
-c <- "/following"
-
-test <- sprintf("%s%s%s", a,b,c) #this method amalgamates a, b and c into one string 
-test                              #called test 
-
-
-
-#Step 2:
-
-numberOfFollowing <- c()    #empty vector
-namesOfFollowing<- c()
-for (i in 1:length(mBostockFollowing$login)) 
-{
-  following <- mBostockFollowing$login[i] #loops through each of my followers, indexed by i
-  jsonLink <- sprintf("%s%s%s", a, following, c) #creates a link for my ith follower
-  followingData <- fromJSON(jsonLink) #stores the followers of my ith follower
-  numberOfFollowing[i] = length(followingData$login) #amount of followers the ith follower has
-  namesOfFollowing[i] = following #names of all users following the ith follower
-  
-}
-numberOfFollowing
-namesOfFollowing
-finalData <- data.frame(numberOfFollowing, namesOfFollowing) #stores two vectors as one
-#data frame
-finalData$namesOfFollowing    
-finalData$numberOfFollowing   #Number of followers of each of my followers
-
-#Step 3 Visualisation
-
-install.packages("devtools")
-install.packages("Rcpp")
-library(devtools)
-library(Rcpp)
-install_github('ramnathv/rCharts', force= TRUE)
-require(rCharts)
-
-
-#The above  lines of code give me access to a package with D3.js libraries, allowing
-#me to produce visualizations which will follow.  Find the link here:
-#https://github.com/ramnathv/rCharts
-
-
-myPlot <- plot_ly(numberOfFollowing ~ namesOfFollowing, data = finalData, type = "multiBarChart")
-myPlot
-
-Graph5 = plot_ly(data = finalData, x = numberOfFollowing, y = namesOfFollowing, type = "bar")
-Graph5
-
 
 #I will now further interrogate Mike Bostocks following to see how many people that they follow
 
@@ -289,13 +231,7 @@ a <- "https://api.github.com/users/"
 b <- mBostockFollowing$login[5]
 b
 c <- "/following"
-
-test <- sprintf("%s%s%s", a,b,c) #this method amalgamates a, b and c into one string 
-test                              #called test 
-
-
-
-
+                          
 numberOfFollowing <- c()    #empty vector
 namesOfFollowing<- c()
 for (i in 1:length(mBostockFollowing$login)) 
@@ -329,5 +265,5 @@ myPlot
 Graph5 = plot_ly(data = finalData, x = numberOfFollowing, y = namesOfFollowing, type = "bar")
 Graph5
 
+#Link to plotly
 api_create(Graph5, "Mike Bostocks Following")
-
