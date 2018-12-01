@@ -224,3 +224,110 @@ Graph4
 
 api_create(graph4, "Top 20 Languages Used on Github")
 
+#Step 1: Processing the data from Github
+mBostockFollowing <- fromJSON("https://api.github.com/users/mbostock/following")
+mBostockFollowing$login #gets the user names of Mike Bostock's followers
+
+a <- "https://api.github.com/users/"
+b <- mBostockFollowing1$login[5]
+b
+c <- "/following"
+
+test <- sprintf("%s%s%s", a,b,c) #this method amalgamates a, b and c into one string 
+test                              #called test 
+
+
+
+#Step 2:
+
+numberOfFollowing <- c()    #empty vector
+namesOfFollowing<- c()
+for (i in 1:length(mBostockFollowing$login)) 
+{
+  following <- mBostockFollowing$login[i] #loops through each of my followers, indexed by i
+  jsonLink <- sprintf("%s%s%s", a, following, c) #creates a link for my ith follower
+  followingData <- fromJSON(jsonLink) #stores the followers of my ith follower
+  numberOfFollowing[i] = length(followingData$login) #amount of followers the ith follower has
+  namesOfFollowing[i] = following #names of all users following the ith follower
+  
+}
+numberOfFollowing
+namesOfFollowing
+finalData <- data.frame(numberOfFollowing, namesOfFollowing) #stores two vectors as one
+#data frame
+finalData$namesOfFollowing    
+finalData$numberOfFollowing   #Number of followers of each of my followers
+
+#Step 3 Visualisation
+
+install.packages("devtools")
+install.packages("Rcpp")
+library(devtools)
+library(Rcpp)
+install_github('ramnathv/rCharts', force= TRUE)
+require(rCharts)
+
+
+#The above  lines of code give me access to a package with D3.js libraries, allowing
+#me to produce visualizations which will follow.  Find the link here:
+#https://github.com/ramnathv/rCharts
+
+
+myPlot <- plot_ly(numberOfFollowing ~ namesOfFollowing, data = finalData, type = "multiBarChart")
+myPlot
+
+Graph5 = plot_ly(data = finalData, x = numberOfFollowing, y = namesOfFollowing, type = "bar")
+Graph5
+
+
+#I will now further interrogate Mike Bostocks following to see how many people that they follow
+
+mBostockFollowing <- fromJSON("https://api.github.com/users/mbostock/following")
+mBostockFollowing$login #gets the user names of Mike Bostock's followers
+
+a <- "https://api.github.com/users/"
+b <- mBostockFollowing$login[5]
+b
+c <- "/following"
+
+test <- sprintf("%s%s%s", a,b,c) #this method amalgamates a, b and c into one string 
+test                              #called test 
+
+
+
+
+numberOfFollowing <- c()    #empty vector
+namesOfFollowing<- c()
+for (i in 1:length(mBostockFollowing$login)) 
+{
+  following <- mBostockFollowing$login[i] #loops through each of my followers, indexed by i
+  jsonLink <- sprintf("%s%s%s", a, following, c) #creates a link for my ith follower
+  followingData <- fromJSON(jsonLink) #stores the followers of my ith follower
+  numberOfFollowing[i] = length(followingData$login) #amount of followers the ith follower has
+  namesOfFollowing[i] = following #names of all users following the ith follower
+  
+}
+numberOfFollowing
+namesOfFollowing
+finalData <- data.frame(numberOfFollowing, namesOfFollowing) #stores two vectors as one
+#data frame
+finalData$namesOfFollowing    
+finalData$numberOfFollowing   #Number of followers of each of my followers
+
+
+#install.packages("devtools")
+#install.packages("Rcpp")
+#library(devtools)
+#library(Rcpp)
+#install_github('ramnathv/rCharts', force= TRUE)
+#require(rCharts)
+
+#These two shows same traits but using different plotting tools
+myPlot <- nPlot(numberOfFollowing ~ namesOfFollowing, data = finalData, type = "multiBarChart")
+myPlot
+
+Graph5 = plot_ly(data = finalData, x = numberOfFollowing, y = namesOfFollowing, type = "bar")
+Graph5
+
+api_create(Graph5, "Mike Bostocks Following")
+
