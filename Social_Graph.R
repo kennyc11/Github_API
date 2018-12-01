@@ -312,7 +312,7 @@ namesOfFollowing
 finalData <- data.frame(numberOfFollowing, namesOfFollowing) #stores two vectors as one
 #data frame
 finalData$namesOfFollowing    
-finalData$numberOfFollowing   #Number of followers of each of my followers
+finalData$numberOfFollowing   #Number of people following of each of mike bostocks following
 
 
 #install.packages("devtools")
