@@ -216,3 +216,11 @@ api_create(BubbleChart, filename = "Following vs. Repositories")
 
 
 api_create(VisualGraph_3, "Top 20 Languages")
+
+#Put top languages into a bar chart
+Graph4 = plot_ly(data = LanguageDF, x = LanguageDF$Languages, y = LanguageDF$Freq, type = "bar")
+Graph4
+
+
+api_create(graph4, "Top 20 Languages Used on Github")
+
