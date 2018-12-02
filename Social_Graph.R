@@ -49,6 +49,56 @@ library(plotly)
 Sys.setenv("plotly_username"="kennyc11")
 Sys.setenv("plotly_api_key"="zFLJG9Kb2on2xdumwWg1")
 
+#I will begin my interrogation by seeing which of the users I (my username is kennyc11) am following is the most influential
+#By most influential I mean which one has the most followers
+
+names <- fromJSON("https://api.github.com/users/kennyc11/following") #variable to get the names of the people I am following
+names$login #gets the user names of people I am following
+
+a <- "https://api.github.com/users/"
+b <- names$login[5]
+b
+c <- "/followers"
+
+#I now can access the followers of kennyc11 following
+
+numberOfFollowers <- c()    #empty vector
+namesOfFollowers <- c()
+for (i in 1:length(names$login)) 
+{
+  following <- names$login[i] #loops through each of the users I am following
+  jsonLink <- sprintf("%s%s%s", a, following, c) #creates a link for my ith following
+  followingData <- fromJSON(jsonLink) #stores the followers of my ith following
+  numberOfFollowers[i] = length(followingData$login) #amount of followers the ith following has
+  namesOfFollowers[i] = followers #names of all users following the ith follower
+  
+}
+numberOfFollowers
+namesOfFollowers
+finalData <- data.frame(numberOfFollowers, namesOfFollowers)
+finalData$namesOfFollowers    
+finalData$numberOfFollowers   #Number of followers of each of the users I am following
+
+#install.packages("devtools")
+#install.packages("Rcpp")
+library(devtools)
+library(Rcpp)
+#install_github('ramnathv/rCharts', force= TRUE)
+require(rCharts)
+
+
+MostInfluential = plot_ly(data = finalData, x = numberOfFollowers, y = namesOfFollowers, type = "bar")
+MostInfluential
+
+myPlotInfluential <- nPlot(numberOfFollowers ~ namesOfFollowers, data = finalData, type = "multiBarChart")
+myPlotInfluential
+
+api_create(MostInfluential, "My most influetial Followers")
+
+#From the first part of my interrogation, I can see the Mike Bostock is the most influential user that I am following
+#Because of this I will now further interrogate Mike Bostock's profile
+#Visualizing graphs of his repositories, followers, and following
+
 # usernames that user Mike Bostock is following
 mBostockFollowing = GET("https://api.github.com/users/mbostock/following", gtoken)
 mBostockFollowingContent = content(mBostockFollowing)
@@ -152,6 +202,8 @@ VisualGraph2 = plot_ly(data = allusers.DF, x = ~Following, y = ~Followers, text 
 
 
 VisualGraph2
+
+api_create(VisualGraph2, "Following vs Followers")
  
 #Looking at the most popular languages used in github
 
@@ -211,59 +263,14 @@ BubbleChart
 #upload to plotly
 api_create(BubbleChart, filename = "Most used Languages")
 
-
+LanguagesUse = LanguageDF$Languages
+Frequency = LanguageDF$Freq
 
 #Put top languages into a bar chart
 #Plot the data frame of languages, showing most used 
 #languages
-Graph4 = plot_ly(data = LanguageDF, x = LanguageDF$Languages, y = LanguageDF$Freq, type = "bar")
+Graph4 = plot_ly(data = LanguageDF, x = LanguagesUse, y = Frequency, type = "bar")
 Graph4
 
 #Upload to plotly
 api_create(graph4, "Top 20 Languages Used on Github")
-
-#I will now further interrogate Mike Bostocks following to see how many people that they follow
-
-mBostockFollowing <- fromJSON("https://api.github.com/users/mbostock/following")
-mBostockFollowing$login #gets the user names of Mike Bostock's followers
-
-a <- "https://api.github.com/users/"
-b <- mBostockFollowing$login[5]
-b
-c <- "/following"
-                          
-numberOfFollowing <- c()    #empty vector
-namesOfFollowing<- c()
-for (i in 1:length(mBostockFollowing$login)) 
-{
-  following <- mBostockFollowing$login[i] #loops through each of my followers, indexed by i
-  jsonLink <- sprintf("%s%s%s", a, following, c) #creates a link for my ith follower
-  followingData <- fromJSON(jsonLink) #stores the followers of my ith follower
-  numberOfFollowing[i] = length(followingData$login) #amount of followers the ith follower has
-  namesOfFollowing[i] = following #names of all users following the ith follower
-  
-}
-numberOfFollowing
-namesOfFollowing
-finalData <- data.frame(numberOfFollowing, namesOfFollowing) #stores two vectors as one
-#data frame
-finalData$namesOfFollowing    
-finalData$numberOfFollowing   #Number of people following of each of mike bostocks following
-
-
-#install.packages("devtools")
-#install.packages("Rcpp")
-#library(devtools)
-#library(Rcpp)
-#install_github('ramnathv/rCharts', force= TRUE)
-#require(rCharts)
-
-#These two shows same traits but using different plotting tools
-myPlot <- nPlot(numberOfFollowing ~ namesOfFollowing, data = finalData, type = "multiBarChart")
-myPlot
-
-Graph5 = plot_ly(data = finalData, x = numberOfFollowing, y = namesOfFollowing, type = "bar")
-Graph5
-
-#Link to plotly
-api_create(Graph5, "Mike Bostocks Following")
