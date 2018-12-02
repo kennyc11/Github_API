@@ -38,14 +38,17 @@ gitDF[gitDF$full_name == "jtleek/datasharing", "created_at"]
 
 #Step 1: Interrogating my own Github and my followers github
 
-#Interrogating my own github "kennyc11"
+#Interrogating my own github "kennyc11", If I want to change the the github account, I simply 
+#change kennyc11 to another username 
+
 myGit  <- fromJSON("https://api.github.com/users/kennyc11")
 myGit$following #returns the number of people that I am following
 myGit$followers #returns the number of people who are following me
 myGit$login #returns my login username
 myGit$public_repos #returns the number of public repositories I have
 
-lcaRepos <- fromJSON("https://api.github.com/repos/ohalloa2/CS3012_LCA/commits")
+#If I want to look at another repository, I can change Software-Engineering to the name of another repository that I have created
+lcaRepos <- fromJSON("https://api.github.com/repos/kennyc11/Software-Engineering/commits")
 lcaRepos$commit$message #The details I included describing each commit to LCA assignment repository
 
 #An interrogation of my repositories in github
@@ -55,15 +58,14 @@ aggregate(data.frame(count = languagesUsed), list(value =languagesUsed), length)
 #df_uniq = unique(languagesUsed)
 #length(df_uniq)
 
-#Looking at the commits in my repository for task 1 Software Engineering
-myReposCommits <- fromJSON("https://api.github.com/repos/kennyc11/Software-Engineering/commits")
-myReposCommits$commit$message #Shows the messages for my commits in this repository
-
-
 
 #Returns list of people of who I am following on github
 myUsers <- fromJSON("https://api.github.com/users/kennyc11/following")
 myUsers$login #returns the username logins of my followers on github
+
+
+#Bit off track, but I can further delve into a user I am following Mike Bostock and interrogate
+#his repositories and organisations
 mikeBostock <- myUsers[1,] #gets the first entry in the row from my followers usernames 
 mikeBostock$login #returns the login username of Mike Bostock
 
@@ -87,7 +89,9 @@ mBostockOrgs$login #returns a list of Mike Bostocks companies
 mBostockOrgs$members_url #returns the url for the members on github of the organisations that Mike Bostocks is a member of
 mBostockOrgs$repos_url #returns the url for the repositories that Mike Bostock is a member of
 
-#Interrogation of members of Mike Bostock Organisation d3
+
+#Interrogation of members of Mike Bostock Organisation d3, can change Mike Bostock organisation by simply changing d3
+#to another one of his organisations
 mBostockOrgsd3 <- fromJSON("https://api.github.com/orgs/d3/members")
 mBostockOrgsd3$login #returns the username of d3 members
 
